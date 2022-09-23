@@ -3,6 +3,7 @@ package com.hmdp.utils;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.StrUtil;
 import com.hmdp.dto.UserDTO;
+import com.hmdp.entity.User;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.web.servlet.HandlerInterceptor;
 
@@ -37,9 +38,9 @@ public class RefreshTokenInterceptor implements HandlerInterceptor {
             return true;
         }
         // 5.将查询到的hash数据转为UserDTO
-        UserDTO userDTO = BeanUtil.fillBeanWithMap(userMap, new UserDTO(), false);
+        User user = BeanUtil.fillBeanWithMap(userMap, new User(), false);
         // 6.存在，保存用户信息到 ThreadLocal
-        UserHolder.saveUser(userDTO);
+        UserHolder.saveUser(user);
         // 7.刷新token有效期
         stringRedisTemplate.expire(key, LOGIN_USER_TTL, TimeUnit.MINUTES);
         // 8.放行
