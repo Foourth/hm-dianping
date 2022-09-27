@@ -77,7 +77,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
             //6. 不存在，创建新用户
             user = createUserWithPhone(phone);
         }
-        // 7.保存用户信息到session
+        // 7.保存用户信息到 Redis
         String token = UUID.randomUUID().toString();
         UserDTO userDTO = BeanUtil.copyProperties(user, UserDTO.class);
         Map<String, Object> userMap = BeanUtil.beanToMap(userDTO, new HashMap<>(),

@@ -17,6 +17,11 @@ public class MvcConfig implements WebMvcConfigurer {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
+        // Token 拦截器
+        registry.addInterceptor(new RefreshTokenInterceptor(stringRedisTemplate))
+                .addPathPatterns("/**")
+                .order(0);
+
         // 登录拦截器
         registry.addInterceptor(new LoginInterceptor(stringRedisTemplate))
                 .excludePathPatterns(
@@ -27,6 +32,6 @@ public class MvcConfig implements WebMvcConfigurer {
                         "/blog/hot",
                         "/user/code",
                         "/user/login"
-                );
+                ).order(1);
     }
 }
